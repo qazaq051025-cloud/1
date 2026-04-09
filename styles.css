@@ -494,3 +494,78 @@ h1#gameTitle {
 .right-racer { top: 150px; }
 .racer-svg { width: 80px; height: 96px; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .racer-container.hopping .racer-svg { transform: translateY(-30px) rotate(10deg); }
+
+/* --- RESPONSIVE MOBILE LAYOUT --- */
+@media (max-width: 768px) and (orientation: portrait) {
+    .game-container {
+        flex-direction: column;
+    }
+    
+    .player-section {
+        padding: 5px;
+    }
+    
+    /* Heads-up mode: top player faces bottom player */
+    .left-player {
+        transform: rotate(180deg);
+        border-right: none;
+        border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+    
+    .right-player {
+        border-left: none;
+        border-top: 2px solid rgba(255,255,255,0.1);
+    }
+    
+    .center-section {
+        flex: 1.5;
+        padding: 10px;
+    }
+    
+    h1#gameTitle {
+        font-size: 1.5em;
+        margin-top: 45px; /* Avoid overlapping home button */
+        text-align: center;
+    }
+    
+    .instruction {
+        font-size: 0.9em;
+        bottom: 10px;
+    }
+    
+    .question-box {
+        font-size: 1.1em;
+        padding: 10px;
+        min-height: 80px;
+        margin-bottom: 15px;
+    }
+    
+    .input-container {
+        max-width: 95%;
+    }
+    
+    /* Resize Buttons */
+    .multiple-choice-pad { gap: 10px; }
+    .choice-btn { font-size: 1em; padding: 10px 5px; }
+
+    .numpad-display-box { height: 45px; font-size: 1.5em; margin-bottom: 10px; }
+    .numpad-grid { gap: 5px; }
+    .num-btn { font-size: 1.2em; padding: 10px 0; }
+    
+    .cards-pad { gap: 10px; }
+    .card-btn { padding: 15px; font-size: 1.2em; border-radius: 15px; }
+
+    .tf-pad { gap: 10px; }
+    .tf-btn { padding: 15px 5px; font-size: 1em; border-radius: 12px; }
+
+    /* Scene Resize */
+    .team-left, .team-right { font-size: 3em; }
+    .rope-line { width: 80px; }
+    .panjat-pinang-field { gap: 50px; }
+    .pole-container { height: 250px; }
+    .race-track { height: 180px; padding: 10px 0; }
+    .race-lane-line { margin: 40px 0; }
+    .left-racer { top: 10px; }
+    .right-racer { top: 70px; }
+    .racer-svg { width: 50px; height: 60px; }
+}
