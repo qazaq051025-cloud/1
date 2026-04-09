@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
+    <title>Универсалды Ойын Платформасы</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Preload critical images -->
+    <!-- (Здесь остались оригинальные изображения чтобы не сломать игру) -->
+    <link rel="preload" as="image" href="panjat_pinang/tiang.png">
+    <link rel="preload" as="image" href="panjat_pinang/standleft.png">
+    <link rel="preload" as="image" href="panjat_pinang/standright.png">
+    <link rel="preload" as="image" href="panjat_pinang/climbleft.png">
+    <link rel="preload" as="image" href="panjat_pinang/climbright.png">
+    <link rel="preload" as="image" href="balap_karung/track.png">
+    <link rel="preload" as="image" href="balap_karung/blue_stand.png">
+    <link rel="preload" as="image" href="balap_karung/blue_hop.png">
+    <link rel="preload" as="image" href="balap_karung/red_stand.png">
+    <link rel="preload" as="image" href="balap_karung/red_hop.png">
+</head>
+<body>
+    <!-- Animated floating shapes background -->
+    <div class="animated-bg">
+        <div class="shape circle blue"></div>
+        <div class="shape square red"></div>
+        <div class="shape triangle yellow"></div>
+        <div class="shape circle red"></div>
+        <div class="shape square yellow"></div>
+        <div class="shape triangle blue"></div>
+        <div class="shape circle yellow-light"></div>
+        <div class="shape square blue-light"></div>
+    </div>
+    <!-- Home Button -->
+    <button id="homeBtn" class="home-btn" onclick="backToGameTypeMenu()" title="Home">
+        🏠
+    </button>
+
+    <!-- Menu Game Mode Selection -->
+    <div id="gameTypeMenu" class="menu-screen active">
+        <div class="menu-container">
+            <h1 class="menu-title">Білім Ойындары</h1>
+            <p class="menu-subtitle">Ойын түрін таңдаңыз</p>
+            <div class="menu-buttons">
+                <button class="menu-btn game-type-btn tarik-tambang" onclick="selectGameType('tarik-tambang')">
+                    <svg class="btn-icon shake-anim" viewBox="0 0 100 100">
+                        <path d="M 10 50 Q 25 30 50 50 T 90 50" fill="none" stroke="#e74c3c" stroke-width="8" stroke-linecap="round"/>
+                        <circle cx="50" cy="50" r="10" fill="#f1c27d"/> <!-- Center knot -->
+                        <text x="15" y="70" font-size="30">🤼</text>
+                    </svg>
+                    <span>Ақан Тартыс</span>
+                </button>
+                <button class="menu-btn game-type-btn panjat-pinang" onclick="selectGameType('panjat-pinang')">
+                    <svg class="btn-icon climb-anim" viewBox="0 0 100 100">
+                        <rect x="45" y="10" width="10" height="80" fill="#cd853f" rx="3"/>
+                        <circle cx="50" cy="60" r="12" fill="#3498db" class="anim-climber"/>
+                    </svg>
+                    <span>Бағанаға Өрмелеу</span>
+                </button>
+                <button class="menu-btn game-type-btn balap-karung" onclick="selectGameType('balap-karung')">
+                    <svg class="btn-icon hop-anim" viewBox="0 0 100 100">
+                        <path d="M 30 50 Q 25 90 35 95 L 65 95 Q 75 90 70 50 Q 50 60 30 50" fill="#f1c40f" stroke="#e67e22" stroke-width="3"/>
+                        <circle cx="50" cy="30" r="15" fill="#e74c3c"/>
+                    </svg>
+                    <span>Қаппен Жарыс</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Topic Selection -->
+    <div id="topicMenu" class="menu-screen" style="display:none;">
+        <div class="menu-container">
+            <h1 class="menu-title">Пәнді таңдаңыз</h1>
+            <p class="menu-subtitle">Қай тақырыпта жарысасыз?</p>
+            <div id="topicButtons" class="menu-buttons">
+                <!-- Осы жерге config.js-тен тақырыптар динамикалық түрде жүктеледі -->
+            </div>
+            <button class="back-btn" onclick="backToGameTypeMenu()">← Артқа</button>
+        </div>
+    </div>
+
+    <!-- Общий шаблон игры. Визуальная часть (Tarik/Panjat/Balap) будет переключаться скриптом -->
+    <div id="gameScreen" class="game-container" style="display:none;">
+        
+        <!-- Player 1 (Left) Section -->
+        <div class="player-section left-player">
+            <div id="q-left" class="question-box">Сұрақ күтілуде...</div>
+            <div class="input-container" id="input-left">
+                <!-- Осы жерге JS арқылы батырмалар, numpad немесе карточкалар салынады -->
+            </div>
+            <div class="score-indicator">Ұпай: <span id="score-left" class="score-value">0/10</span></div>
+        </div>
+
+        <!-- Center Animation Section -->
+        <div class="center-section">
+            <h1 id="gameTitle">Ойын</h1>
+            
+            <!-- TARIK TAMBANG -->
+            <div id="scene-tarik-tambang" class="game-scene" style="display:none;">
+                <div class="game-field">
+                    <div class="rope-container" id="rope" style="transform: translateX(0px);">
+                        <div class="team-left">🤼</div>
+                        <div class="rope-line"></div>
+                        <div class="center-knot"></div>
+                        <div class="rope-line"></div>
+                        <div class="team-right">🤼</div>
+                    </div>
+                    <div class="center-line"></div>
+                </div>
+            </div>
+
+            <!-- PANJAT PINANG -->
+            <div id="scene-panjat-pinang" class="game-scene" style="display:none;">
+                <div class="game-field panjat-pinang-field">
+                    <div class="pole-container left-pole">
+                        <div class="pole-line"></div>
+                        <div class="climber-container left-climber" id="climber-left" style="bottom: 0%;">
+                            <svg viewBox="0 0 100 100" class="climber-svg blue-character">
+                                <rect x="40" y="30" width="20" height="30" fill="#3498db" rx="5"/>
+                                <circle cx="50" cy="20" r="12" fill="#f1c27d"/>
+                                <g class="arm-left" transform-origin="40 35"><rect x="25" y="35" width="15" height="6" fill="#3498db" rx="3"/></g>
+                                <g class="arm-right" transform-origin="60 35"><rect x="60" y="35" width="15" height="6" fill="#3498db" rx="3"/></g>
+                                <g class="leg-left" transform-origin="45 60"><rect x="40" y="60" width="8" height="20" fill="#2c3e50" rx="3"/></g>
+                                <g class="leg-right" transform-origin="55 60"><rect x="52" y="60" width="8" height="20" fill="#2c3e50" rx="3"/></g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="pole-container right-pole">
+                        <div class="pole-line"></div>
+                        <div class="climber-container right-climber" id="climber-right" style="bottom: 0%;">
+                            <svg viewBox="0 0 100 100" class="climber-svg red-character">
+                                <rect x="40" y="30" width="20" height="30" fill="#e74c3c" rx="5"/>
+                                <circle cx="50" cy="20" r="12" fill="#f1c27d"/>
+                                <g class="arm-left" transform-origin="40 35"><rect x="25" y="35" width="15" height="6" fill="#e74c3c" rx="3"/></g>
+                                <g class="arm-right" transform-origin="60 35"><rect x="60" y="35" width="15" height="6" fill="#e74c3c" rx="3"/></g>
+                                <g class="leg-left" transform-origin="45 60"><rect x="40" y="60" width="8" height="20" fill="#2c3e50" rx="3"/></g>
+                                <g class="leg-right" transform-origin="55 60"><rect x="52" y="60" width="8" height="20" fill="#2c3e50" rx="3"/></g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BALAP KARUNG -->
+            <div id="scene-balap-karung" class="game-scene" style="display:none;">
+                <div class="game-field balap-karung-field">
+                    <div class="race-track">
+                        <div class="race-lane-line"></div>
+                        <div class="racer-container left-racer" id="racer-left" style="left: 0%;">
+                            <svg viewBox="0 0 100 120" class="racer-svg blue-character">
+                                <circle cx="50" cy="25" r="15" fill="#f1c27d"/>
+                                <path d="M 25 50 Q 20 110 30 115 L 70 115 Q 80 110 75 50 Q 50 60 25 50" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                                <circle cx="25" cy="55" r="6" fill="#f1c27d"/>
+                                <circle cx="75" cy="55" r="6" fill="#f1c27d"/>
+                            </svg>
+                        </div>
+                        <div class="race-lane-line"></div>
+                        <div class="racer-container right-racer" id="racer-right" style="left: 0%;">
+                            <svg viewBox="0 0 100 120" class="racer-svg red-character">
+                                <circle cx="50" cy="25" r="15" fill="#f1c27d"/>
+                                <path d="M 25 50 Q 20 110 30 115 L 70 115 Q 80 110 75 50 Q 50 60 25 50" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                                <circle cx="25" cy="55" r="6" fill="#f1c27d"/>
+                                <circle cx="75" cy="55" r="6" fill="#f1c27d"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="instruction">Дұрыс жауапты бірінші болып белгілеңіз!</p>
+        </div>
+
+        <!-- Player 2 (Right) Section -->
+        <div class="player-section right-player">
+            <div id="q-right" class="question-box">Сұрақ күтілуде...</div>
+            <div class="input-container" id="input-right">
+                <!-- Осы жерге JS арқылы батырмалар, numpad немесе карточкалар салынады -->
+            </div>
+            <div class="score-indicator">Ұпай: <span id="score-right" class="score-value">0/10</span></div>
+        </div>
+    </div>
+
+    <div id="winnerModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2 id="winnerText">🎉 Жеңіс! 🎉</h2>
+            <p id="winnerMessage">Ойыншы жеңіске жетті!</p>
+            <button class="menu-btn" onclick="backToGameTypeMenu()">Бас мәзірге оралу</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
